@@ -67,17 +67,72 @@
     panel.appendChild(body);
     panel.appendChild(inputRow);
 
+    // Per-message verify/export modal
+    var verifyOverlay = el("div", { class: "modal-overlay" });
+    var verifyMsgText = el("p", { class: "muted", style: "font-size:13px; margin:0 0 12px; padding:12px; background:var(--color-100); border-radius:8px;" });
+    var verifyHashText = el("p", { class: "muted", style: "font-size:11px; word-break:break-all; margin:0 0 20px;" });
+    var verifyCloseBtn = el("button", { type: "button", class: "btn btn-secondary", text: "닫기" });
+    var verifyDownloadBtn = el("button", { type: "button", class: "btn btn-primary", text: "JSON으로 내보내기" });
+    var verifyBox = el("div", { class: "modal-box", style: "width:380px;" }, [
+      el("h3", { text: "메시지 검증" }),
+      el("div", { class: "pill pill-verified", style: "margin-bottom:14px;" }, [
+        el("span", { class: "dot" }),
+        el("span", { text: "온체인 기록과 일치 · 검증됨" })
+      ]),
+      verifyMsgText,
+      verifyHashText,
+      el("div", { class: "modal-actions" }, [verifyCloseBtn, verifyDownloadBtn])
+    ]);
+    verifyOverlay.appendChild(verifyBox);
+    document.body.appendChild(verifyOverlay);
+
+    var currentVerifyData = null;
+    verifyCloseBtn.addEventListener("click", function () { verifyOverlay.classList.remove("open"); });
+    verifyOverlay.addEventListener("click", function (e) {
+      if (e.target === verifyOverlay) verifyOverlay.classList.remove("open");
+    });
+    verifyDownloadBtn.addEventListener("click", function () {
+      if (!currentVerifyData) return;
+      var blob = new Blob([JSON.stringify(currentVerifyData, null, 2)], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "ait_message_evidence.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
     root.appendChild(panel);
     root.appendChild(fab);
     document.body.appendChild(root);
 
     function addMsg(text, who) {
+      var hash = randomHash();
       var group = el("div", { class: "ait-msg-group " + who });
       var bubble = el("div", { class: "ait-msg ait-msg-" + who, text: text });
-      var meta = el("div", { class: "ait-msg-meta" }, [
+      var meta = el("div", { class: "ait-msg-meta", style: "cursor:pointer;" }, [
         el("span", { class: "dot" }),
-        el("span", { text: "온체인 기록됨 · " + randomHash() })
+        el("span", { text: "온체인 기록됨 · " + hash })
       ]);
+      meta.addEventListener("click", function () {
+        currentVerifyData = {
+          message: text,
+          role: who,
+          message_hash: hash,
+          on_chain: {
+            network: "Base Sepolia",
+            contract: "AuditAnchor",
+            note: "이 해시가 포함된 배치의 머클루트가 온체인에 기록되어 있어, 메시지 원문을 다시 해시화해 대조하면 위·변조 여부를 검증할 수 있어요."
+          },
+          generated_by: "AIT 도우미 위젯 · 메시지 검증(목업)",
+          generated_at: new Date().toISOString()
+        };
+        verifyMsgText.textContent = text;
+        verifyHashText.textContent = "메시지 해시: " + hash;
+        verifyOverlay.classList.add("open");
+      });
       group.appendChild(bubble);
       group.appendChild(meta);
       body.appendChild(group);
