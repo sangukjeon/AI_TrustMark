@@ -36,18 +36,105 @@
 
   <table class="ledger">
     <thead>
-      <tr><th>세션 ID</th><th>일시</th><th>메시지 수</th><th>세션 머클루트</th><th>온체인 배치 tx</th><th>상태</th></tr>
+      <tr><th>세션 ID</th><th>일시</th><th>메시지 수</th><th>세션 머클루트</th><th>온체인 배치 tx</th><th>상태</th><th>증거</th></tr>
     </thead>
-    <tbody>
-      <tr><td><strong>SES-88231</strong></td><td class="muted">2026-09-13 14:02</td><td class="muted">8</td><td class="muted">0x1a2b…9e4c</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
-      <tr><td><strong>SES-88230</strong></td><td class="muted">2026-09-13 13:47</td><td class="muted">4</td><td class="muted">0x7f3e…c810</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
-      <tr><td><strong>SES-88229</strong></td><td class="muted">2026-09-13 13:20</td><td class="muted">12</td><td class="muted">0x55d0…af33</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
-      <tr><td><strong>SES-88228</strong></td><td class="muted">2026-09-13 12:58</td><td class="muted">6</td><td class="muted">0x902c…11e7</td><td class="muted">0x4e9a…7f02</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
-      <tr><td><strong>SES-88227</strong></td><td class="muted">2026-09-13 12:31</td><td class="muted">3</td><td class="muted">0xd41f…6b90</td><td class="muted">0x4e9a…7f02</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
+    <tbody id="ledgerBody">
+      <tr data-session="SES-88231"><td><strong>SES-88231</strong></td><td class="muted">2026-09-13 14:02</td><td class="muted">8</td><td class="muted">0x1a2b…9e4c</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td><td><button type="button" class="export-btn" style="background:none;border:none;color:var(--color-primary);font-weight:700;font-size:13px;cursor:pointer;padding:0;">내보내기</button></td></tr>
+      <tr data-session="SES-88230"><td><strong>SES-88230</strong></td><td class="muted">2026-09-13 13:47</td><td class="muted">4</td><td class="muted">0x7f3e…c810</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td><td><button type="button" class="export-btn" style="background:none;border:none;color:var(--color-primary);font-weight:700;font-size:13px;cursor:pointer;padding:0;">내보내기</button></td></tr>
+      <tr data-session="SES-88229"><td><strong>SES-88229</strong></td><td class="muted">2026-09-13 13:20</td><td class="muted">12</td><td class="muted">0x55d0…af33</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td><td><button type="button" class="export-btn" style="background:none;border:none;color:var(--color-primary);font-weight:700;font-size:13px;cursor:pointer;padding:0;">내보내기</button></td></tr>
+      <tr data-session="SES-88228"><td><strong>SES-88228</strong></td><td class="muted">2026-09-13 12:58</td><td class="muted">6</td><td class="muted">0x902c…11e7</td><td class="muted">0x4e9a…7f02</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td><td><button type="button" class="export-btn" style="background:none;border:none;color:var(--color-primary);font-weight:700;font-size:13px;cursor:pointer;padding:0;">내보내기</button></td></tr>
+      <tr data-session="SES-88227"><td><strong>SES-88227</strong></td><td class="muted">2026-09-13 12:31</td><td class="muted">3</td><td class="muted">0xd41f…6b90</td><td class="muted">0x4e9a…7f02</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td><td><button type="button" class="export-btn" style="background:none;border:none;color:var(--color-primary);font-weight:700;font-size:13px;cursor:pointer;padding:0;">내보내기</button></td></tr>
     </tbody>
   </table>
 </div>
 
+<div class="modal-overlay" id="exportModalOverlay">
+  <div class="modal-box" style="width:480px;">
+    <h3 id="exportTitle">증거 자료 내보내기</h3>
+    <p class="muted modal-sub" style="font-size:13px;">원본 대화 내용, 머클 증명, 온체인 트랜잭션 정보를 하나의 파일로 묶어요. 법적 분쟁이나 감사 시 제3자가 AIT를 거치지 않고 직접 진위를 검증할 수 있어요.</p>
+
+    <div class="card" style="padding:0; margin-bottom:16px;">
+      <div class="row-between" style="padding:10px 16px;"><span class="muted" style="font-size:12px;">세션 ID</span><strong id="expSession" style="font-size:12px;"></strong></div>
+      <div class="row-between" style="padding:10px 16px; border-top:1px solid var(--color-300);"><span class="muted" style="font-size:12px;">메시지 수</span><strong id="expCount" style="font-size:12px;"></strong></div>
+      <div class="row-between" style="padding:10px 16px; border-top:1px solid var(--color-300);"><span class="muted" style="font-size:12px;">세션 머클루트</span><strong id="expRoot" style="font-size:12px;"></strong></div>
+      <div class="row-between" style="padding:10px 16px; border-top:1px solid var(--color-300);"><span class="muted" style="font-size:12px;">온체인 배치 tx</span><strong id="expTx" style="font-size:12px;"></strong></div>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="cancelExportBtn">닫기</button>
+      <button type="button" class="btn btn-primary" id="downloadExportBtn">JSON으로 다운로드</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var ledgerRows = {
+  "SES-88231": { time: "2026-09-13 14:02", count: 8, root: "0x1a2b7f9c3e8d4a6f0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f9e4c", tx: "0xba71c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b20d1" },
+  "SES-88230": { time: "2026-09-13 13:47", count: 4, root: "0x7f3e2a1b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2fc810", tx: "0xba71c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b20d1" },
+  "SES-88229": { time: "2026-09-13 13:20", count: 12, root: "0x55d0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0af33", tx: "0xba71c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b20d1" },
+  "SES-88228": { time: "2026-09-13 12:58", count: 6, root: "0x902c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c11e7", tx: "0x4e9a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f47f02" },
+  "SES-88227": { time: "2026-09-13 12:31", count: 3, root: "0xd41f3e2a1b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e6b90", tx: "0x4e9a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f47f02" }
+};
+
+var exportOverlay = document.getElementById('exportModalOverlay');
+var currentSession = null;
+
+document.getElementById('ledgerBody').addEventListener('click', function (e) {
+  if (!e.target.classList.contains('export-btn')) return;
+  var row = e.target.closest('tr');
+  currentSession = row.getAttribute('data-session');
+  var d = ledgerRows[currentSession];
+  document.getElementById('exportTitle').textContent = '증거 자료 내보내기 · ' + currentSession;
+  document.getElementById('expSession').textContent = currentSession;
+  document.getElementById('expCount').textContent = d.count + '개';
+  document.getElementById('expRoot').textContent = d.root.slice(0, 10) + '…' + d.root.slice(-6);
+  document.getElementById('expTx').textContent = d.tx.slice(0, 10) + '…' + d.tx.slice(-6);
+  exportOverlay.classList.add('open');
+});
+document.getElementById('cancelExportBtn').addEventListener('click', function () {
+  exportOverlay.classList.remove('open');
+});
+exportOverlay.addEventListener('click', function (e) {
+  if (e.target === exportOverlay) exportOverlay.classList.remove('open');
+});
+
+document.getElementById('downloadExportBtn').addEventListener('click', function () {
+  if (!currentSession) return;
+  var d = ledgerRows[currentSession];
+  var bundle = {
+    session_id: currentSession,
+    service: "학사도우미",
+    anchored_at: d.time,
+    message_count: d.count,
+    messages: [
+      { role: "user", content: "(예시) 휴학 신청 기간이 언제인가요?", hash: "0x4c8a1f2e...(원본 메시지 SHA-256)" },
+      { role: "assistant", content: "(예시) 2026학년도 2학기 일반휴학 신청 기간은 9월 1일부터 9월 20일까지예요.", hash: "0x9d21b3f0...(원본 메시지 SHA-256)" }
+    ],
+    merkle_proof: [
+      "0x" + Math.random().toString(16).slice(2).padEnd(16, "0"),
+      "0x" + Math.random().toString(16).slice(2).padEnd(16, "0")
+    ],
+    on_chain: {
+      network: "Base Sepolia",
+      contract: "AuditAnchor",
+      session_merkle_root: d.root,
+      batch_tx_hash: d.tx,
+      note: "이 파일의 messages를 다시 해시화하고 merkle_proof를 따라 계산한 값이 session_merkle_root와 일치하면 위조되지 않은 원본입니다. batch_tx_hash로 블록 탐색기에서 온체인 기록을 직접 확인할 수 있어요."
+    },
+    generated_by: "AIT 증거 자료 내보내기 (목업)",
+    generated_at: new Date().toISOString()
+  };
+  var blob = new Blob([JSON.stringify(bundle, null, 2)], { type: "application/json" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = currentSession + '_evidence.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+</script>
 <script src="assets/widget.js"></script>
 </body>
 </html>
