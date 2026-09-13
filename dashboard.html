@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기관 대시보드 — AIT</title>
+<link rel="icon" type="image/png" href="assets/svg.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="AIT"></a>
+  <div class="links">
+    <a href="about.html">서비스 소개</a>
+    <a href="verify.html">인증마크 확인</a>
+    <a href="dashboard.html" style="color:var(--color-primary);">기관 대시보드</a>
+  </div>
+  <a href="login.html" id="logoutBtn" class="btn btn-secondary">로그아웃</a>
+</nav>
+
+<div class="container">
+  <div class="row-between" style="margin-bottom:32px;">
+    <div class="row gap-3" style="align-items:center;">
+      <h1 style="font-size:24px; margin:0;">기관 대시보드</h1>
+      <select id="orgSelect" style="padding:8px 12px; border:1px solid var(--color-300); border-radius:var(--radius-sm); font-size:14px; font-weight:700; font-family:inherit; color:var(--color-primary);">
+        <option value="우송대학교">· 우송대학교</option>
+        <option value="경북대학교">· 경북대학교</option>
+        <option value="전남대학교">· 전남대학교</option>
+      </select>
+    </div>
+    <button type="button" id="openApplyBtn" class="btn btn-primary">+ 새 검사 신청</button>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:32px;">
+    <div class="card"><div class="muted" style="font-size:13px;">등록 서비스</div><div id="statTotal" style="font-size:32px; font-weight:700;">6</div></div>
+    <div class="card"><div class="muted" style="font-size:13px;">인증됨</div><div id="statVerified" style="font-size:32px; font-weight:700;">4</div></div>
+    <div class="card"><div class="muted" style="font-size:13px;">심사중</div><div id="statPending" style="font-size:32px; font-weight:700;">1</div></div>
+    <div class="card"><div class="muted" style="font-size:13px;">재검사 예정 (7일 내)</div><div id="statUpcoming" style="font-size:32px; font-weight:700;">2</div></div>
+  </div>
+
+  <table class="ledger">
+    <thead>
+      <tr><th>서비스명</th><th>상태</th><th>최근 검사일</th><th>만료일</th><th>액션</th></tr>
+    </thead>
+    <tbody id="serviceTableBody">
+      <tr>
+        <td><strong>학사도우미 (챗봇)</strong></td>
+        <td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td>
+        <td class="muted">2026-09-10</td>
+        <td class="muted">2026-12-09</td>
+        <td><a href="verify.html?service=학사도우미" style="color:var(--color-primary); font-weight:700;">상세보기</a></td>
+      </tr>
+      <tr>
+        <td><strong>장학금 안내봇</strong></td>
+        <td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td>
+        <td class="muted">2026-08-28</td>
+        <td class="muted">2026-11-26</td>
+        <td><a href="verify.html?service=장학금+안내봇" style="color:var(--color-primary); font-weight:700;">상세보기</a></td>
+      </tr>
+      <tr>
+        <td><strong>입학상담 AI</strong></td>
+        <td><span class="pill pill-pending"><span class="dot"></span>심사중</span></td>
+        <td class="muted">심사중</td>
+        <td class="muted">-</td>
+        <td><a href="#" style="color:var(--color-primary); font-weight:700;">진행상황</a></td>
+      </tr>
+      <tr>
+        <td><strong>교내식당 추천봇</strong></td>
+        <td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td>
+        <td class="muted">2026-07-15</td>
+        <td class="muted">2026-10-13</td>
+        <td><a href="verify.html?service=교내식당+추천봇" style="color:var(--color-primary); font-weight:700;">상세보기</a></td>
+      </tr>
+      <tr>
+        <td><strong>도서관 사서봇</strong></td>
+        <td><span class="pill pill-revoked"><span class="dot"></span>철회됨</span></td>
+        <td class="muted">2026-06-01</td>
+        <td class="muted">이의제기 중</td>
+        <td><a href="appeal.html" style="color:var(--color-primary); font-weight:700;">이의제기 보기</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal-overlay" id="applyModalOverlay">
+  <div class="modal-box">
+    <h3>새 인증 검사 신청</h3>
+    <p class="muted modal-sub" style="font-size:13px;">등록한 AI 서비스는 독립 감사관 네트워크의 검사 대기열에 들어가요.</p>
+    <form id="applyForm">
+      <div class="form-field">
+        <label for="svcName">서비스명 *</label>
+        <input id="svcName" type="text" placeholder="예: 수강신청 도우미" required>
+      </div>
+      <div class="form-field">
+        <label for="svcDesc">서비스 설명</label>
+        <textarea id="svcDesc" rows="3" placeholder="이 AI 서비스가 무엇을 하는지 간단히 설명해주세요"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="svcDoc">근거 규정 문서</label>
+        <input id="svcDoc" type="file">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="cancelApplyBtn">취소</button>
+        <button type="submit" class="btn btn-primary">검사 신청하기</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+var orgStats = {
+  "우송대학교": { total: 6, verified: 4, pending: 1, upcoming: 2 },
+  "경북대학교": { total: 4, verified: 3, pending: 0, upcoming: 1 },
+  "전남대학교": { total: 3, verified: 1, pending: 2, upcoming: 0 }
+};
+var orgSelect = document.getElementById('orgSelect');
+
+var session = null;
+try { session = JSON.parse(localStorage.getItem('ait_session') || 'null'); } catch (err) {}
+
+var params = new URLSearchParams(window.location.search);
+var initialOrg = params.get('org') || (session && session.org);
+
+if (initialOrg && !orgStats[initialOrg]) {
+  orgStats[initialOrg] = { total: 0, verified: 0, pending: 0, upcoming: 0 };
+  var newOpt = document.createElement('option');
+  newOpt.value = initialOrg;
+  newOpt.textContent = '· ' + initialOrg;
+  orgSelect.insertBefore(newOpt, orgSelect.firstChild);
+}
+if (initialOrg) orgSelect.value = initialOrg;
+
+var tbody = document.getElementById('serviceTableBody');
+
+function applyOrg(org) {
+  var s = orgStats[org] || orgStats["우송대학교"];
+  document.getElementById('statTotal').textContent = s.total;
+  document.getElementById('statVerified').textContent = s.verified;
+  document.getElementById('statPending').textContent = s.pending;
+  document.getElementById('statUpcoming').textContent = s.upcoming;
+}
+orgSelect.addEventListener('change', function () { applyOrg(this.value); });
+applyOrg(orgSelect.value);
+
+document.getElementById('logoutBtn').addEventListener('click', function () {
+  try { localStorage.removeItem('ait_session'); } catch (err) {}
+});
+
+var overlay = document.getElementById('applyModalOverlay');
+document.getElementById('openApplyBtn').addEventListener('click', function () {
+  overlay.classList.add('open');
+  document.getElementById('svcName').focus();
+});
+document.getElementById('cancelApplyBtn').addEventListener('click', function () {
+  overlay.classList.remove('open');
+});
+overlay.addEventListener('click', function (e) {
+  if (e.target === overlay) overlay.classList.remove('open');
+});
+
+document.getElementById('applyForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var name = document.getElementById('svcName').value.trim();
+  if (!name) return;
+
+  var row = document.createElement('tr');
+  row.innerHTML =
+    '<td><strong>' + name + '</strong></td>' +
+    '<td><span class="pill pill-pending"><span class="dot"></span>심사중</span></td>' +
+    '<td class="muted">심사중</td>' +
+    '<td class="muted">-</td>' +
+    '<td><a href="#" style="color:var(--color-primary); font-weight:700;">진행상황</a></td>';
+  tbody.insertBefore(row, tbody.firstChild);
+
+  var org = orgSelect.value;
+  var s = orgStats[org] || orgStats["우송대학교"];
+  s.total += 1;
+  s.pending += 1;
+  applyOrg(org);
+
+  this.reset();
+  overlay.classList.remove('open');
+});
+</script>
+<script src="assets/widget.js"></script>
+</body>
+</html>

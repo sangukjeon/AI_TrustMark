@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>채팅 기록 온체인 원장 — AIT</title>
+<link rel="icon" type="image/png" href="assets/svg.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="AIT"></a>
+  <div class="links">
+    <a href="about.html">서비스 소개</a>
+    <a href="verify.html">인증마크 확인</a>
+    <a href="dashboard.html">기관 대시보드</a>
+  </div>
+  <a href="login.html" class="btn btn-secondary" onclick="try{localStorage.removeItem('ait_session')}catch(e){}">로그아웃</a>
+</nav>
+
+<div class="container">
+  <div style="color:var(--color-chain); font-weight:600; font-size:13px; margin-bottom:4px;">학사도우미 · 채팅 기록 온체인 원장</div>
+  <h1 style="font-size:24px; margin:0 0 20px;">모든 대화는 위조 없이 기록되고 있습니다</h1>
+
+  <div class="card" style="border-color:var(--color-chain); margin-bottom:24px;">
+    <p style="margin:0; font-size:13px; color:var(--color-500); line-height:1.55;">메시지 단위 해시 → 세션 단위 머클루트 → 1시간마다 배치로 온체인 앵커링. 개별 트랜잭션 없이도 모든 대화 내용의 위·변조 여부를 검증할 수 있어요.</p>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:24px;">
+    <div class="card"><div class="muted" style="font-size:13px;">총 대화 세션</div><div style="font-size:28px; font-weight:700;">1,284</div></div>
+    <div class="card"><div class="muted" style="font-size:13px;">총 메시지 수</div><div style="font-size:28px; font-weight:700;">9,662</div></div>
+    <div class="card"><div class="muted" style="font-size:13px;">온체인 앵커 완료율</div><div style="font-size:28px; font-weight:700;">100%</div></div>
+    <div class="card"><div class="muted" style="font-size:13px;">변조 의심 건</div><div style="font-size:28px; font-weight:700;">0</div></div>
+  </div>
+
+  <table class="ledger">
+    <thead>
+      <tr><th>세션 ID</th><th>일시</th><th>메시지 수</th><th>세션 머클루트</th><th>온체인 배치 tx</th><th>상태</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>SES-88231</strong></td><td class="muted">2026-09-13 14:02</td><td class="muted">8</td><td class="muted">0x1a2b…9e4c</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
+      <tr><td><strong>SES-88230</strong></td><td class="muted">2026-09-13 13:47</td><td class="muted">4</td><td class="muted">0x7f3e…c810</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
+      <tr><td><strong>SES-88229</strong></td><td class="muted">2026-09-13 13:20</td><td class="muted">12</td><td class="muted">0x55d0…af33</td><td class="muted">0xba71…20d1</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
+      <tr><td><strong>SES-88228</strong></td><td class="muted">2026-09-13 12:58</td><td class="muted">6</td><td class="muted">0x902c…11e7</td><td class="muted">0x4e9a…7f02</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
+      <tr><td><strong>SES-88227</strong></td><td class="muted">2026-09-13 12:31</td><td class="muted">3</td><td class="muted">0xd41f…6b90</td><td class="muted">0x4e9a…7f02</td><td><span class="pill pill-verified"><span class="dot"></span>인증됨</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="assets/widget.js"></script>
+</body>
+</html>

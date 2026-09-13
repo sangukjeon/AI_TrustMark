@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학사도우미 챗봇 — AIT</title>
+<link rel="icon" type="image/png" href="assets/svg.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div style="background:var(--color-100); min-height:100vh; display:flex; flex-direction:column; align-items:flex-end; justify-content:flex-end; padding:32px;">
+  <div class="muted" style="font-size:13px; margin-bottom:16px; align-self:flex-start;">우송대학교 학사정보 누리집 (학사도우미 챗봇 위젯)</div>
+
+  <div style="width:420px; height:680px; background:#fff; border:1px solid var(--color-300); border-radius:var(--radius-lg); box-shadow:0 8px 24px rgba(0,0,0,0.12); display:flex; flex-direction:column; overflow:hidden;">
+
+    <div style="background:var(--color-primary); padding:14px 16px; display:flex; align-items:center; gap:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:#fff;"></div>
+      <div>
+        <div style="color:#fff; font-weight:700; font-size:14px;">학사도우미</div>
+        <div class="row gap-2" style="align-items:center;">
+          <span class="mini-badge"><img src="assets/mark.png" alt="AIT 인증"></span>
+          <span style="color:#fff; font-size:11px;">AIT 인증됨 · 대화 온체인 기록</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1; padding:16px; display:flex; flex-direction:column; gap:16px; overflow-y:auto;">
+      <div style="align-self:flex-end; max-width:280px;">
+        <div style="background:var(--color-primary); color:#fff; padding:10px 12px; border-radius:12px; font-size:13px;">휴학 신청 기간이 언제인가요?</div>
+      </div>
+      <div style="align-self:flex-start; max-width:280px;">
+        <div style="background:var(--color-150); padding:10px 12px; border-radius:12px; font-size:13px;">2026학년도 2학기 일반휴학 신청 기간은 9월 1일부터 9월 20일까지예요. 학과 사무실에 서류를 제출하면 승인돼요.</div>
+        <div class="row gap-2" style="font-size:10px; color:var(--color-chain); font-weight:600; margin-top:4px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--color-chain); display:inline-block;"></span>온체인 기록됨 · 0x4c8a…f01e</div>
+      </div>
+      <div style="align-self:flex-end; max-width:280px;">
+        <div style="background:var(--color-primary); color:#fff; padding:10px 12px; border-radius:12px; font-size:13px;">휴학 중에도 장학금 신청할 수 있나요?</div>
+      </div>
+      <div style="align-self:flex-start; max-width:280px;">
+        <div style="background:var(--color-150); padding:10px 12px; border-radius:12px; font-size:13px;">휴학 기간에는 대부분의 교내 장학금 신청 자격이 제한돼요. 예외 사항이 궁금하면 학적팀(042-821-XXXX)으로 문의해 주세요.</div>
+        <div class="row gap-2" style="font-size:10px; color:var(--color-chain); font-weight:600; margin-top:4px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--color-chain); display:inline-block;"></span>온체인 기록됨 · 0x9d21…7b4e</div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--color-300); padding:12px; display:flex; gap:8px; align-items:center;">
+      <div style="flex:1; background:var(--color-150); border-radius:8px; padding:8px 12px; font-size:13px; color:var(--color-500);">궁금한 학사 정보를 물어보세요</div>
+      <div style="width:36px;height:36px;border-radius:8px;background:var(--color-primary);"></div>
+    </div>
+  </div>
+
+  <div style="align-self:flex-start; margin-top:16px;">
+    <a href="ledger.html" class="muted" style="font-size:13px;">이 대화의 온체인 기록 전체 보기 →</a>
+  </div>
+</div>
+
+</body>
+</html>

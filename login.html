@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인 — AIT</title>
+<link rel="icon" type="image/png" href="assets/svg.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="AIT"></a>
+  <div></div>
+  <a href="index.html" class="btn btn-tertiary">← 홈으로</a>
+</nav>
+
+<div style="max-width:400px; margin:0 auto; padding:80px 24px 140px;">
+  <div class="stack" style="align-items:center; text-align:center; gap:8px; margin-bottom:32px;">
+    <img src="assets/svg.png" alt="AIT" style="width:56px; height:56px; border-radius:16px; margin-bottom:8px;">
+    <h1 style="font-size:22px; margin:0;">기관 계정으로 로그인</h1>
+    <p class="muted" style="margin:0; font-size:14px;">인증 검사 신청과 대시보드 관리를 위해 로그인하세요.</p>
+  </div>
+
+  <form class="card" id="loginForm" style="gap:16px; display:flex; flex-direction:column;">
+    <div class="stack" style="gap:6px;">
+      <label style="font-size:13px; font-weight:600;" for="orgSelect">기관 선택</label>
+      <select id="orgSelect" style="padding:10px 12px; border:1px solid var(--color-300); border-radius:var(--radius-sm); font-size:14px; font-family:inherit;">
+        <option>우송대학교</option>
+        <option>경북대학교</option>
+        <option>전남대학교</option>
+        <option value="__new__">+ 새 기관 등록</option>
+      </select>
+    </div>
+    <div class="stack" id="newOrgField" style="gap:6px; display:none;">
+      <label style="font-size:13px; font-weight:600;" for="newOrgName">신규 기관명</label>
+      <input id="newOrgName" type="text" placeholder="예: 우송정보대학" style="padding:10px 12px; border:1px solid var(--color-300); border-radius:var(--radius-sm); font-size:14px; font-family:inherit;">
+    </div>
+    <div class="stack" style="gap:6px;">
+      <label style="font-size:13px; font-weight:600;" for="email">이메일</label>
+      <input id="email" type="email" placeholder="admin@cnu.ac.kr" required style="padding:10px 12px; border:1px solid var(--color-300); border-radius:var(--radius-sm); font-size:14px; font-family:inherit;">
+    </div>
+    <div class="stack" style="gap:6px;">
+      <label style="font-size:13px; font-weight:600;" for="password">비밀번호</label>
+      <input id="password" type="password" placeholder="••••••••" required style="padding:10px 12px; border:1px solid var(--color-300); border-radius:var(--radius-sm); font-size:14px; font-family:inherit;">
+    </div>
+    <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">로그인</button>
+    <p id="loginMsg" class="muted" style="font-size:12px; text-align:center; margin:0; min-height:16px;"></p>
+  </form>
+
+  <p class="muted" style="text-align:center; font-size:13px; margin-top:20px;">계정이 없으신가요? <a href="dashboard.html" style="color:var(--color-primary); font-weight:700;">기관 등록하기</a></p>
+</div>
+
+<script>
+var orgSelectEl = document.getElementById('orgSelect');
+var newOrgField = document.getElementById('newOrgField');
+var newOrgName = document.getElementById('newOrgName');
+orgSelectEl.addEventListener('change', function () {
+  newOrgField.style.display = this.value === '__new__' ? 'flex' : 'none';
+});
+
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var org = orgSelectEl.value === '__new__' ? newOrgName.value.trim() : orgSelectEl.value;
+  if (!org) { newOrgName.focus(); return; }
+  var email = document.getElementById('email').value;
+  var msg = document.getElementById('loginMsg');
+  msg.textContent = org + ' 계정으로 로그인 중...';
+  msg.style.color = 'var(--color-500)';
+  try {
+    localStorage.setItem('ait_session', JSON.stringify({ org: org, email: email, loggedInAt: Date.now() }));
+  } catch (err) {}
+  setTimeout(function () {
+    window.location.href = 'dashboard.html?org=' + encodeURIComponent(org);
+  }, 500);
+});
+</script>
+<script src="assets/widget.js"></script>
+</body>
+</html>

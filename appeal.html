@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이의제기 — AIT</title>
+<link rel="icon" type="image/png" href="assets/svg.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="AIT"></a>
+  <div class="links">
+    <a href="about.html">서비스 소개</a>
+    <a href="verify.html">인증마크 확인</a>
+    <a href="dashboard.html">기관 대시보드</a>
+  </div>
+  <a href="login.html" class="btn btn-secondary" onclick="try{localStorage.removeItem('ait_session')}catch(e){}">로그아웃</a>
+</nav>
+
+<div class="container">
+  <div class="card" id="submittedBanner" style="display:none; margin-bottom:20px; border-color:var(--color-verified); background:var(--color-verified-bg); padding:14px 20px;">
+    <strong style="color:var(--color-verified); font-size:14px;">✓ 이의제기가 정상적으로 접수됐어요.</strong>
+    <span class="muted" style="font-size:13px;"> AI 스크리닝이 자동으로 시작됐어요. 아래에서 진행 상황을 확인할 수 있어요.</span>
+  </div>
+  <div class="muted" style="font-size:13px; margin-bottom:4px;">이의제기 · #A-2026-0091</div>
+  <div class="row gap-3" style="margin-bottom:32px;">
+    <h1 id="pageTitle" style="font-size:24px; margin:0;">'도서관 사서봇' 철회 판정에 대한 이의제기</h1>
+    <span class="pill pill-pending"><span class="dot"></span>심사중</span>
+  </div>
+
+  <!-- Step indicator -->
+  <div class="row" style="margin-bottom:32px;">
+    <div class="row gap-3" style="flex:0 0 auto;">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;">1</div>
+      <strong>이의제기 접수</strong>
+    </div>
+    <div style="flex:1;height:2px;background:var(--color-primary);margin:0 12px;"></div>
+    <div class="row gap-3" style="flex:0 0 auto;">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;">2</div>
+      <strong>AI 스크리닝</strong>
+    </div>
+    <div style="flex:1;height:2px;background:var(--color-primary);margin:0 12px;"></div>
+    <div class="row gap-3" style="flex:0 0 auto;">
+      <div style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--color-primary);color:var(--color-primary);display:flex;align-items:center;justify-content:center;font-weight:700;">3</div>
+      <strong>제3 감사관 배정</strong>
+    </div>
+    <div style="flex:1;height:2px;background:var(--color-300);margin:0 12px;"></div>
+    <div class="row gap-3" style="flex:0 0 auto;">
+      <div style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--color-300);color:var(--color-500);display:flex;align-items:center;justify-content:center;font-weight:700;">4</div>
+      <span class="muted">최종 판정</span>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:24px; align-items:flex-start;">
+    <div class="card" style="flex:2;">
+      <h3 style="margin:0 0 16px;">판정 기록 (모든 발언은 해시로 온체인에 앵커링돼요)</h3>
+
+      <div style="background:var(--color-150); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:16px;">
+        <strong style="font-size:13px;">기관 (우송대 정보화본부)</strong>
+        <p id="firstEntryText" style="font-size:13px; color:var(--color-500); margin:6px 0;">도서관 사서봇이 반납일 계산 문항에서 오답을 낸 것은 규정 문서 갱신 반영 지연 때문입니다. 재검토를 요청합니다.</p>
+        <div class="row gap-2" style="font-size:11px; color:var(--color-chain); font-weight:700;"><span class="dot" style="width:5px;height:5px;border-radius:50%;background:var(--color-chain);"></span>온체인 앵커됨 · 0x7a1c…44f0</div>
+      </div>
+
+      <div style="background:var(--color-150); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:16px;">
+        <strong style="font-size:13px;">AI 스크리닝</strong>
+        <p style="font-size:13px; color:var(--color-500); margin:6px 0;">이의 사유가 '규정 문서 최신성' 쟁점에 해당함을 확인. 근거 문서 diff 자동 생성 완료. 제3 감사관 배정 필요로 판단.</p>
+        <div class="row gap-2" style="font-size:11px; color:var(--color-chain); font-weight:700;"><span class="dot" style="width:5px;height:5px;border-radius:50%;background:var(--color-chain);"></span>온체인 앵커됨 · 0x2e9b…8c31</div>
+      </div>
+
+      <div style="background:var(--color-150); border-radius:var(--radius-sm); padding:12px 16px;">
+        <strong style="font-size:13px;">제3 감사관 (auditor-07)</strong>
+        <p style="font-size:13px; color:var(--color-500); margin:6px 0;">갱신된 반납 규정 문서 기준으로 동일 문항 20종 재검사 중입니다. 표현 변형 5종 교차 검증 진행.</p>
+        <div class="row gap-2" style="font-size:11px; color:var(--color-chain); font-weight:700;"><span class="dot" style="width:5px;height:5px;border-radius:50%;background:var(--color-chain);"></span>온체인 앵커됨 · 0x91fd…0a76</div>
+      </div>
+    </div>
+
+    <div class="stack gap-4" style="flex:1;">
+      <div class="card">
+        <h4 style="margin:0 0 12px; font-size:14px;">원 판정 정보</h4>
+        <div class="stack gap-3">
+          <div><div class="muted" style="font-size:12px;">원 판정</div><div style="font-size:13px; font-weight:600;">철회됨 (2026-06-01)</div></div>
+          <div><div class="muted" style="font-size:12px;">문항 셋 해시</div><div style="font-size:13px; font-weight:600;">0x3f0e…22ab</div></div>
+          <div><div class="muted" style="font-size:12px;">감사관 수</div><div style="font-size:13px; font-weight:600;">3인 (2인 철회 / 1인 보류)</div></div>
+          <div><div class="muted" style="font-size:12px;">이의 접수일</div><div style="font-size:13px; font-weight:600;">2026-09-11</div></div>
+        </div>
+      </div>
+      <div class="card" style="border-color:var(--color-chain);">
+        <h4 style="margin:0 0 10px; font-size:14px; color:var(--color-chain);">이의제기 기록 · 온체인 요약</h4>
+        <p style="font-size:12px; color:var(--color-500); line-height:1.55;">위 3건의 발언은 각각 해시로 앵커링돼서, 최종 판정 이후에도 내용을 임의로 수정할 수 없어요. 전체 이의제기 로그는 아래 트랜잭션에서 바로 확인할 수 있어요.</p>
+        <a href="ledger.html" class="btn btn-secondary btn-block">온체인 로그 전체 보기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var appealParams = new URLSearchParams(window.location.search);
+if (appealParams.get('submitted') === '1') {
+  document.getElementById('submittedBanner').style.display = 'block';
+  var reason = null, svcName = null;
+  try {
+    reason = sessionStorage.getItem('ait_appeal_reason');
+    svcName = sessionStorage.getItem('ait_appeal_service');
+  } catch (err) {}
+  if (svcName) {
+    document.getElementById('pageTitle').textContent = "'" + svcName + "' 판정에 대한 이의제기";
+  }
+  if (reason) {
+    document.getElementById('firstEntryText').textContent = reason;
+  }
+  try {
+    sessionStorage.removeItem('ait_appeal_reason');
+    sessionStorage.removeItem('ait_appeal_service');
+  } catch (err) {}
+}
+</script>
+<script src="assets/widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인증 검증 — AIT</title>
+<link rel="icon" type="image/png" href="assets/svg.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="AIT"></a>
+  <div></div>
+  <div class="muted" style="font-size:13px;">공개 인증 검증 페이지</div>
+</nav>
+
+<div style="min-height:calc(100vh - 73px); display:flex; align-items:center; justify-content:center; padding:32px 24px 100px;">
+  <div style="max-width:980px; width:100%; display:flex; gap:40px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+
+    <div class="stack" style="align-items:center; text-align:center; gap:14px; flex:1 1 280px;">
+      <div class="verified-badge" style="width:120px; height:120px;">
+        <img src="assets/mark.png" alt="AIT 국제 인증마크">
+      </div>
+      <span class="pill pill-verified"><span class="dot"></span>인증됨</span>
+      <h1 style="font-size:23px; margin:0;">이 AI 서비스는 인증되었습니다</h1>
+      <p class="muted" id="svcSubtitle" style="margin:0;">우송대학교 학사상담 챗봇 – '학사도우미'</p>
+      <div class="row gap-3" style="margin-top:8px; flex-wrap:wrap; justify-content:center;">
+        <a href="#" class="btn btn-primary">온체인에서 직접 검증하기</a>
+        <button type="button" id="openAppealBtn" class="btn btn-secondary">이의제기 하기</button>
+      </div>
+      <p class="muted" style="font-size:12px; margin:4px 0 0;">이 인증마크는 매주 자동으로 재검사돼요. 규정이 바뀌거나 응답 품질에 변화가 감지되면, 등급도 그에 맞게 갱신돼요.</p>
+    </div>
+
+    <div class="stack gap-4" style="flex:1 1 320px; min-width:300px;">
+      <div class="card" style="padding:0;">
+        <div class="row-between" style="padding:14px 20px;">
+          <span class="muted" style="font-size:13px;">발급 기관</span><strong style="font-size:13px;">우송대학교 정보화본부</strong>
+        </div>
+        <div class="row-between" style="padding:14px 20px; border-top:1px solid var(--color-300);">
+          <span class="muted" style="font-size:13px;">검사 완료일</span><strong id="issueDate" style="font-size:13px;">2026-09-10</strong>
+        </div>
+        <div class="row-between" style="padding:14px 20px; border-top:1px solid var(--color-300);">
+          <span class="muted" style="font-size:13px;">유효기간</span><strong id="expiry" style="font-size:13px;">2026-12-09까지 (90일)</strong>
+        </div>
+        <div class="row-between" style="padding:14px 20px; border-top:1px solid var(--color-300);">
+          <span class="muted" style="font-size:13px;">감사관 판정</span><strong id="auditResult" style="font-size:13px;">3인 중 3인 일치 (다수결 확정)</strong>
+        </div>
+        <div class="row-between" style="padding:14px 20px; border-top:1px solid var(--color-300);">
+          <span class="muted" style="font-size:13px;">온체인 트랜잭션</span><strong id="txHash" style="font-size:13px;">0x8f2a…c91d (Base Sepolia)</strong>
+        </div>
+        <div class="row-between" style="padding:14px 20px; border-top:1px solid var(--color-300);">
+          <span class="muted" style="font-size:13px;">이의제기 대화 기록</span><strong id="appealHash" style="font-size:13px;">해시 앵커됨 · 0x51e0…7ab2</strong>
+        </div>
+      </div>
+
+      <div class="card row gap-4" style="align-items:center;">
+        <img id="qrImg" alt="검증 페이지 QR 코드 (목업)" style="width:88px; height:88px; flex-shrink:0;">
+        <p class="muted" style="font-size:12px; margin:0;">실제 서비스에서는 이 QR을 스캔해 검증<br> 페이지로  바로 접속할 수 있어요</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay" id="appealModalOverlay">
+  <div class="modal-box">
+    <h3>이의제기 접수</h3>
+    <p class="muted modal-sub" style="font-size:13px;">접수하면 바로 AI 스크리닝이 시작되고, 필요하면 제3의 감사관이 다시 검토해요. 이 대화 내용도 해시로 온체인에 기록돼요.</p>
+    <form id="appealForm">
+      <div class="form-field">
+        <label for="appealReason">이의제기 사유 *</label>
+        <textarea id="appealReason" rows="4" placeholder="어떤 부분이 잘못됐다고 생각하시나요? 근거가 있다면 함께 적어주세요." required></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="cancelAppealBtn">취소</button>
+        <button type="submit" class="btn btn-primary">접수하기</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+var serviceData = {
+  "학사도우미": {
+    subtitle: "우송대학교 학사상담 챗봇 – '학사도우미'",
+    issueDate: "2026-09-10", expiry: "2026-12-09까지 (90일)",
+    auditResult: "3인 중 3인 일치 (다수결 확정)",
+    tx: "0x8f2a…c91d (Base Sepolia)", appeal: "해시 앵커됨 · 0x51e0…7ab2"
+  },
+  "장학금 안내봇": {
+    subtitle: "우송대학교 장학금 안내 챗봇 – '장학금 안내봇'",
+    issueDate: "2026-08-28", expiry: "2026-11-26까지 (90일)",
+    auditResult: "3인 중 3인 일치 (다수결 확정)",
+    tx: "0x2b7e…9f13 (Base Sepolia)", appeal: "이의제기 이력 없음"
+  },
+  "교내식당 추천봇": {
+    subtitle: "우송대학교 교내식당 메뉴 추천 챗봇",
+    issueDate: "2026-07-15", expiry: "2026-10-13까지 (90일)",
+    auditResult: "3인 중 2인 일치 (다수결 확정)",
+    tx: "0x6a19…de44 (Base Sepolia)", appeal: "이의제기 이력 없음"
+  }
+};
+
+var params = new URLSearchParams(window.location.search);
+var svc = params.get('service');
+if (svc && serviceData[svc]) {
+  var d = serviceData[svc];
+  document.getElementById('svcSubtitle').textContent = d.subtitle;
+  document.getElementById('issueDate').textContent = d.issueDate;
+  document.getElementById('expiry').textContent = d.expiry;
+  document.getElementById('auditResult').textContent = d.auditResult;
+  document.getElementById('txHash').textContent = d.tx;
+  document.getElementById('appealHash').textContent = d.appeal;
+}
+
+// 목업용 QR — 실제 URL로는 연결되지 않는 장식용 이미지예요.
+document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=8&data=' + encodeURIComponent('AIT VERIFIED · ' + (svc || '학사도우미'));
+
+var appealOverlay = document.getElementById('appealModalOverlay');
+document.getElementById('openAppealBtn').addEventListener('click', function () {
+  appealOverlay.classList.add('open');
+  document.getElementById('appealReason').focus();
+});
+document.getElementById('cancelAppealBtn').addEventListener('click', function () {
+  appealOverlay.classList.remove('open');
+});
+appealOverlay.addEventListener('click', function (e) {
+  if (e.target === appealOverlay) appealOverlay.classList.remove('open');
+});
+document.getElementById('appealForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var reason = document.getElementById('appealReason').value.trim();
+  if (!reason) return;
+  try {
+    sessionStorage.setItem('ait_appeal_reason', reason);
+    sessionStorage.setItem('ait_appeal_service', svc || '학사도우미');
+  } catch (err) {}
+  window.location.href = 'appeal.html?submitted=1';
+});
+</script>
+<script src="assets/widget.js"></script>
+</body>
+</html>

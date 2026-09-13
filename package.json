@@ -1,0 +1,13 @@
+{
+  "name": "ai-trustmark-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Smart contracts for AIT (AI_TrustMark) — on-chain audit anchoring and certification",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.0"
+  }
+}
